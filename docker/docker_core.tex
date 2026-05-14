@@ -1,0 +1,59 @@
+\documentclass[10pt,twocolumn]{article}
+\usepackage[scaled]{helvet}
+\renewcommand\familydefault{\sfdefault}
+\usepackage[T1]{fontenc}
+\usepackage[margin=0.7in]{geometry}
+\usepackage{titlesec}
+\usepackage{enumitem}
+\usepackage{parskip}
+\setlength{\columnsep}{0.24in}
+\setlist[itemize]{leftmargin=1.2em, topsep=0.2em, itemsep=0.18em}
+\titleformat{\section}{\large\bfseries}{\thesection}{1em}{}
+
+\begin{document}
+\title{\vspace{-1.6cm}Docker for ML Workloads}
+\author{AWS ML Study Notes}
+\date{}
+\maketitle
+\small
+
+\section*{Overview}
+Docker packages an application and its runtime dependencies into a portable container image. For ML work, that usually means Python dependencies, native libraries, model server processes, and sometimes CUDA aligned stacks.
+
+Containerization matters because ML code that works on one laptop can fail elsewhere due to library versions, system packages, or GPU compatibility. Docker reduces that drift by making the runtime explicit.
+
+\section*{Core Concepts}
+\begin{itemize}
+\item A Docker image is a layered filesystem built from a Dockerfile, while a container is a running instance created from that image.
+\item Good ML container design separates dependency installation, application code, model loading behavior, and configuration so rebuilds stay fast and reproducible.
+\item Images are typically stored in a registry such as ECR and then executed by a runtime platform such as ECS, SageMaker, or Kubernetes.
+\end{itemize}
+
+\section*{How It Works}
+\begin{itemize}
+\item You define a Dockerfile, build the image locally or in CI, run tests inside the image, and publish the versioned artifact to a registry.
+\item At deployment time, the target platform pulls the image, injects configuration and credentials, and starts the container according to the workload type.
+\item For inference systems, startup behavior matters because model download time, warmup steps, and dependency weight directly affect deployment speed and cold start characteristics.
+\end{itemize}
+
+\section*{AI and ML Relevance}
+\begin{itemize}
+\item Docker is the standard packaging boundary for custom training jobs, model servers, feature services, and batch processing components in modern ML platforms.
+\item It also makes local reproduction easier because the same image can be tested before it is pushed into a managed AWS runtime.
+\end{itemize}
+
+\section*{Operational Notes}
+\begin{itemize}
+\item Keep images small and deterministic. Bloated images increase build time, push time, scan time, and startup latency.
+\item Pin dependency versions, scan for vulnerabilities, and separate secrets from the image itself. Secrets belong in runtime configuration, not baked into layers.
+\item Be especially careful with GPU stacks. CUDA, driver expectations, and framework versions need to line up with the runtime environment.
+\end{itemize}
+
+\section*{What To Remember}
+\begin{itemize}
+\item Docker solves packaging and runtime consistency, not orchestration or model governance.
+\item A reproducible image is a prerequisite for reliable ML deployment, not the whole deployment story.
+\item If the image cannot be rebuilt from source with the same dependencies, release confidence is weaker than it looks.
+\end{itemize}
+
+\end{document}

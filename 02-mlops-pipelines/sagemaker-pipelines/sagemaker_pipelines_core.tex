@@ -1,0 +1,59 @@
+\documentclass[10pt,twocolumn]{article}
+\usepackage[scaled]{helvet}
+\renewcommand\familydefault{\sfdefault}
+\usepackage[T1]{fontenc}
+\usepackage[margin=0.7in]{geometry}
+\usepackage{titlesec}
+\usepackage{enumitem}
+\usepackage{parskip}
+\setlength{\columnsep}{0.24in}
+\setlist[itemize]{leftmargin=1.2em, topsep=0.2em, itemsep=0.18em}
+\titleformat{\section}{\large\bfseries}{\thesection}{1em}{}
+
+\begin{document}
+\title{\vspace{-1.6cm}AWS SageMaker Pipelines}
+\author{AWS ML Study Notes}
+\date{}
+\maketitle
+\small
+
+\section*{Overview}
+SageMaker Pipelines is a managed workflow service for machine learning lifecycle orchestration inside SageMaker. It expresses ML steps as a directed graph with explicit inputs, outputs, parameters, and dependencies.
+
+Unlike generic CI pipelines, it is designed around ML concerns such as processing, training, evaluation, conditional registration, and repeatable data driven execution.
+
+\section*{Core Concepts}
+\begin{itemize}
+\item Pipelines can include processing steps, training steps, tuning jobs, evaluation logic, conditional branches, cache reuse, and model registration.
+\item Pipeline parameters let you vary dataset paths, instance types, thresholds, or model package groups without rewriting the pipeline definition.
+\item Step outputs become named references for downstream stages, which improves reproducibility and makes the workflow graph easier to reason about.
+\end{itemize}
+
+\section*{How It Works}
+\begin{itemize}
+\item A pipeline definition is created in code and submitted to SageMaker, where it becomes a reusable managed workflow.
+\item When the pipeline runs, preprocessing produces features, training creates a model artifact, evaluation computes quality metrics, and a conditional step decides whether the model should be registered or deployed.
+\item Each run leaves an execution record, which helps trace exactly which data, parameters, and images were involved in a given model version.
+\end{itemize}
+
+\section*{AI and ML Relevance}
+\begin{itemize}
+\item This service is useful when retraining or promotion needs to happen repeatedly with discipline, especially across multiple environments or business units.
+\item It aligns well with model governance because quality thresholds, approval gates, and lineage are represented as part of the workflow rather than as informal side notes.
+\end{itemize}
+
+\section*{Operational Notes}
+\begin{itemize}
+\item Keep the pipeline definition in version control and treat it like application code. Hidden notebook logic is a common source of unreproducible ML systems.
+\item Use caching and incremental design where possible, but ensure cache reuse does not mask a legitimate need to rerun a step after data or code changes.
+\item Be explicit about what constitutes a deployable model. A finished training job is not automatically a production ready outcome.
+\end{itemize}
+
+\section*{What To Remember}
+\begin{itemize}
+\item SageMaker Pipelines is about repeatable ML execution, not general source code CI.
+\item The core mental model is preprocess, train, evaluate, decide, and promote.
+\item A high quality pipeline makes model release criteria visible and enforceable instead of tribal knowledge.
+\end{itemize}
+
+\end{document}

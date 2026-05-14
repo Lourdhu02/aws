@@ -1,0 +1,59 @@
+\documentclass[10pt,twocolumn]{article}
+\usepackage[scaled]{helvet}
+\renewcommand\familydefault{\sfdefault}
+\usepackage[T1]{fontenc}
+\usepackage[margin=0.7in]{geometry}
+\usepackage{titlesec}
+\usepackage{enumitem}
+\usepackage{parskip}
+\setlength{\columnsep}{0.24in}
+\setlist[itemize]{leftmargin=1.2em, topsep=0.2em, itemsep=0.18em}
+\titleformat{\section}{\large\bfseries}{\thesection}{1em}{}
+
+\begin{document}
+\title{\vspace{-1.6cm}AWS Glue}
+\author{AWS ML Study Notes}
+\date{}
+\maketitle
+\small
+
+\section*{Overview}
+Glue is AWS's serverless data integration service. It combines a data catalog, schema discovery, and ETL style jobs for moving and transforming data across analytical pipelines.
+
+For ML, Glue is often the bridge between raw operational data and curated training or analytics datasets that downstream systems can trust.
+
+\section*{Core Concepts}
+\begin{itemize}
+\item The Glue Data Catalog stores table definitions and partitions so services like Athena and Spark jobs can agree on dataset structure.
+\item Crawlers inspect data sources and infer schemas, though mature teams often override or curate those schemas rather than trusting inferred output blindly.
+\item Glue jobs can run Spark based transformations at scale, with job bookmarks to track progress across repeated incremental runs.
+\end{itemize}
+
+\section*{How It Works}
+\begin{itemize}
+\item Data lands in S3 or another source system, a crawler or manual schema registration defines metadata, and a Glue job transforms the data into a cleaned output location.
+\item The curated data is then queryable through Athena, consumable by SageMaker, or passed into downstream reporting and feature engineering systems.
+\item Schedules or event driven triggers let the pipeline refresh as new source data arrives.
+\end{itemize}
+
+\section*{AI and ML Relevance}
+\begin{itemize}
+\item Glue helps standardize training data preparation, feature extraction jobs, and schema management for large datasets that exceed what ad hoc notebook code should be trusted to handle.
+\item It is especially useful when multiple consumers need the same curated datasets and you want transformation logic to live in a managed, repeatable pipeline.
+\end{itemize}
+
+\section*{Operational Notes}
+\begin{itemize}
+\item Schema drift is common. If upstream producers change field names or types, downstream jobs can silently degrade unless validation is explicit.
+\item Partition data and use efficient file formats such as Parquet so jobs and queries do not waste time scanning unnecessary data.
+\item Glue is powerful, but not every transformation needs Spark. Use simpler tools for small, local, or latency sensitive tasks.
+\end{itemize}
+
+\section*{What To Remember}
+\begin{itemize}
+\item Think of Glue as both metadata infrastructure and transformation infrastructure.
+\item The catalog is often just as important as the ETL job because discoverability and shared schema matter across teams.
+\item Reliable ML depends on reliable data preparation, and Glue is one way to formalize that layer.
+\end{itemize}
+
+\end{document}

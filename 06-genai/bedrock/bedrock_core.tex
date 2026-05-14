@@ -1,0 +1,59 @@
+\documentclass[10pt,twocolumn]{article}
+\usepackage[scaled]{helvet}
+\renewcommand\familydefault{\sfdefault}
+\usepackage[T1]{fontenc}
+\usepackage[margin=0.7in]{geometry}
+\usepackage{titlesec}
+\usepackage{enumitem}
+\usepackage{parskip}
+\setlength{\columnsep}{0.24in}
+\setlist[itemize]{leftmargin=1.2em, topsep=0.2em, itemsep=0.18em}
+\titleformat{\section}{\large\bfseries}{\thesection}{1em}{}
+
+\begin{document}
+\title{\vspace{-1.6cm}AWS Bedrock}
+\author{AWS ML Study Notes}
+\date{}
+\maketitle
+\small
+
+\section*{Overview}
+Bedrock is AWS's managed generative AI platform for working with foundation models through API based access without managing the underlying model serving infrastructure yourself.
+
+It is useful when you want to build generative AI features on AWS while focusing on prompt design, retrieval, governance, and application behavior rather than GPU fleet operations.
+
+\section*{Core Concepts}
+\begin{itemize}
+\item Bedrock provides access to multiple model families through a unified style of managed integration, along with features for guardrails, knowledge based augmentation, and agent oriented workflows.
+\item The platform fits well with AWS identity, network, and observability controls, which can matter for enterprises that need private governance around generative AI usage.
+\item The key abstraction is managed model invocation. You work with prompts, context, configurations, and outputs rather than building the serving stack yourself.
+\end{itemize}
+
+\section*{How It Works}
+\begin{itemize}
+\item An application sends a request containing the prompt and any supporting context to the chosen model endpoint through Bedrock's API.
+\item Optional retrieval, policy, or orchestration layers can enrich the request before model inference, and the output is then returned to the application for postprocessing or user presentation.
+\item Teams can wrap this with evaluation, prompt versioning, caching, and safety controls to create a governed production path.
+\end{itemize}
+
+\section*{AI and ML Relevance}
+\begin{itemize}
+\item Bedrock is relevant when ML teams need chat, summarization, extraction, or retrieval augmented generation features but do not want to self host large models.
+\item It also enables a practical split of responsibilities: platform teams manage security and cost guardrails, while product teams iterate on prompts, context, and UX behavior.
+\end{itemize}
+
+\section*{Operational Notes}
+\begin{itemize}
+\item Do not confuse easy API access with solved product quality. Prompt design, retrieval quality, hallucination mitigation, and evaluation discipline still matter.
+\item Watch token usage and latency, because generative AI cost scales differently from traditional endpoint hosting.
+\item Treat private data carefully. Context sent to a model is still a data handling event and must respect governance boundaries.
+\end{itemize}
+
+\section*{What To Remember}
+\begin{itemize}
+\item Bedrock abstracts model hosting, not application design risk.
+\item Retrieval quality and evaluation quality often matter more than swapping from one model to another.
+\item For production genAI, governance and observability are as important as raw model capability.
+\end{itemize}
+
+\end{document}

@@ -1,0 +1,59 @@
+\documentclass[10pt,twocolumn]{article}
+\usepackage[scaled]{helvet}
+\renewcommand\familydefault{\sfdefault}
+\usepackage[T1]{fontenc}
+\usepackage[margin=0.7in]{geometry}
+\usepackage{titlesec}
+\usepackage{enumitem}
+\usepackage{parskip}
+\setlength{\columnsep}{0.24in}
+\setlist[itemize]{leftmargin=1.2em, topsep=0.2em, itemsep=0.18em}
+\titleformat{\section}{\large\bfseries}{\thesection}{1em}{}
+
+\begin{document}
+\title{\vspace{-1.6cm}AWS CodePipeline}
+\author{AWS ML Study Notes}
+\date{}
+\maketitle
+\small
+
+\section*{Overview}
+CodePipeline is AWS's managed continuous delivery orchestrator. It connects source, build, test, approval, and deployment actions into a stage based release flow.
+
+Its main value is disciplined automation. Instead of relying on a person to remember deployment steps, the pipeline executes the same controlled sequence every time.
+
+\section*{Core Concepts}
+\begin{itemize}
+\item A pipeline is composed of stages, and each stage contains actions such as source retrieval, CodeBuild execution, manual approval, or deployment integration.
+\item Artifacts move from one stage to the next so that the exact built output is what gets tested and deployed.
+\item Pipelines integrate well with IAM, KMS, EventBridge, and downstream deployment targets such as ECS, Lambda, CloudFormation, or custom actions.
+\end{itemize}
+
+\section*{How It Works}
+\begin{itemize}
+\item A code or configuration change triggers the pipeline, which pulls the source and passes it into automated build and validation steps.
+\item Successful outputs are packaged as artifacts, optionally gated by manual approval, then deployed to the target environment through a controlled action.
+\item Notifications and audit trails make it clear which version moved where and whether a failure happened in source, build, test, or deployment.
+\end{itemize}
+
+\section*{AI and ML Relevance}
+\begin{itemize}
+\item In ML systems, CodePipeline is often used for infrastructure as code, deployment of inference services, packaging of training images, or promotion of approved model packages.
+\item It is particularly useful when the broader platform standardizes on AWS native CI and CD rather than an external orchestration tool.
+\end{itemize}
+
+\section*{Operational Notes}
+\begin{itemize}
+\item Keep pipeline stages purposeful. Mixing unrelated validation and deployment logic into one opaque step makes failures harder to debug.
+\item Store artifacts securely and make the pipeline idempotent so reruns do not create confusing partial state.
+\item Use manual approval only where human judgment adds real value. Too many approval steps turn automation into ceremony.
+\end{itemize}
+
+\section*{What To Remember}
+\begin{itemize}
+\item CodePipeline is a release conveyor belt. It is most valuable when release steps are standardized and auditable.
+\item Artifacts matter because they preserve what was actually built and tested.
+\item It solves software promotion, not experiment tracking. That is an important boundary in ML systems.
+\end{itemize}
+
+\end{document}

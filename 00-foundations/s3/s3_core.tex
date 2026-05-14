@@ -1,0 +1,59 @@
+\documentclass[10pt,twocolumn]{article}
+\usepackage[scaled]{helvet}
+\renewcommand\familydefault{\sfdefault}
+\usepackage[T1]{fontenc}
+\usepackage[margin=0.7in]{geometry}
+\usepackage{titlesec}
+\usepackage{enumitem}
+\usepackage{parskip}
+\setlength{\columnsep}{0.24in}
+\setlist[itemize]{leftmargin=1.2em, topsep=0.2em, itemsep=0.18em}
+\titleformat{\section}{\large\bfseries}{\thesection}{1em}{}
+
+\begin{document}
+\title{\vspace{-1.6cm}AWS S3 (Simple Storage Service)}
+\author{AWS ML Study Notes}
+\date{}
+\maketitle
+\small
+
+\section*{Overview}
+S3 is AWS object storage. It stores data as objects inside buckets and is designed for very high durability, massive scale, and broad integration with the rest of AWS.
+
+In ML systems, S3 is usually the default data lake and artifact store. Raw data, curated datasets, model files, pipeline outputs, logs, and static assets often live there.
+
+\section*{Core Concepts}
+\begin{itemize}
+\item Buckets are top level containers and objects are individual files or blobs addressed by key. Prefixes are naming conventions that simulate folders and support partitioned layouts.
+\item Important features include versioning, lifecycle rules, server side encryption, bucket policies, replication, event notifications, and multiple storage classes.
+\item S3 provides strong read after write and list consistency, which simplifies many ingestion and pipeline patterns compared with older eventual consistency assumptions.
+\end{itemize}
+
+\section*{How It Works}
+\begin{itemize}
+\item Applications upload or download objects through the S3 API, SDKs, CLI, or signed URLs. IAM and bucket policies decide who can access which paths.
+\item Data engineering jobs commonly read from raw prefixes, transform the data, and write curated outputs in columnar formats such as Parquet for analytics and downstream ML use.
+\item Many services integrate directly with S3, including Athena, Glue, SageMaker, Lambda event notifications, and CloudTrail log delivery.
+\end{itemize}
+
+\section*{AI and ML Relevance}
+\begin{itemize}
+\item Training datasets are often staged in S3, and model artifacts are written back there after the training job completes.
+\item S3 can trigger downstream workflows when new data lands, which is useful for automated feature computation, validation, batch inference, or retraining pipelines.
+\end{itemize}
+
+\section*{Operational Notes}
+\begin{itemize}
+\item Design the bucket key structure deliberately. Bad partitioning and inconsistent naming make analytics, retention, and lifecycle management painful later.
+\item Encrypt sensitive data, control public access at both the bucket and account level, and use lifecycle rules to move cold data to cheaper storage classes.
+\item Do not treat S3 like a filesystem with heavy small file chatter when a compact columnar layout would be more efficient and cheaper.
+\end{itemize}
+
+\section*{What To Remember}
+\begin{itemize}
+\item S3 is object storage, not block storage and not a database.
+\item Bucket policy plus IAM policy plus encryption controls together define access posture.
+\item For ML, think of S3 as the durable backbone for data and artifacts rather than just a place to drop files.
+\end{itemize}
+
+\end{document}

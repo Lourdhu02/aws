@@ -1,0 +1,59 @@
+\documentclass[10pt,twocolumn]{article}
+\usepackage[scaled]{helvet}
+\renewcommand\familydefault{\sfdefault}
+\usepackage[T1]{fontenc}
+\usepackage[margin=0.7in]{geometry}
+\usepackage{titlesec}
+\usepackage{enumitem}
+\usepackage{parskip}
+\setlength{\columnsep}{0.24in}
+\setlist[itemize]{leftmargin=1.2em, topsep=0.2em, itemsep=0.18em}
+\titleformat{\section}{\large\bfseries}{\thesection}{1em}{}
+
+\begin{document}
+\title{\vspace{-1.6cm}Certification: AWS Solutions Architect}
+\author{AWS ML Study Notes}
+\date{}
+\maketitle
+\small
+
+\section*{Overview}
+The AWS Solutions Architect path focuses on designing resilient, secure, cost aware systems on AWS. Even for an ML focused engineer, that mindset is important because production ML inherits all the usual architecture concerns of any serious cloud system.
+
+Studying for this certification strengthens the foundation that supports data and ML workloads: networking, storage, compute, identity, resilience, and multi service design tradeoffs.
+
+\section*{Core Concepts}
+\begin{itemize}
+\item The core lens is the AWS Well Architected style of thinking: operational excellence, security, reliability, performance efficiency, cost optimization, and sustainability.
+\item You should be comfortable comparing compute options, database models, networking patterns, disaster recovery strategies, and identity designs across common workloads.
+\item Unlike an ML specific exam, this path broadens your ability to reason about the surrounding system that hosts, secures, and scales the model lifecycle.
+\end{itemize}
+
+\section*{How It Works}
+\begin{itemize}
+\item Study by taking ordinary application and platform scenarios and asking which AWS services fit best under explicit constraints such as global reach, low latency, regulated data, or spiky traffic.
+\item Use labs to reinforce VPC networking, IAM, storage design, load balancing, autoscaling, messaging, and database selection because those building blocks appear repeatedly.
+\item Practice comparing architectures, not just naming services. The exam frequently tests the best answer among plausible options rather than a single obvious fact.
+\end{itemize}
+
+\section*{AI and ML Relevance}
+\begin{itemize}
+\item For ML practitioners, this certification improves the surrounding engineering judgment needed for secure data access, release automation, network isolation, monitoring, and cost control.
+\item It is especially helpful when your role extends beyond model code into broader platform or product architecture responsibilities.
+\end{itemize}
+
+\section*{Operational Notes}
+\begin{itemize}
+\item Do not neglect fundamentals because they feel less exciting than ML topics. Most production incidents arise from basic architecture weaknesses, not from exotic modeling tricks.
+\item Tie every service to a design tradeoff and a failure mode. Knowing when not to use something is often as important as knowing when to use it.
+\item Revisit cost, security, and resilience questions repeatedly. Those themes cut across nearly every architecture decision.
+\end{itemize}
+
+\section*{What To Remember}
+\begin{itemize}
+\item Strong ML systems still rely on strong cloud architecture basics.
+\item This certification trains decision making under constraints, which transfers directly into ML platform design.
+\item If you can explain the tradeoff clearly, you are studying at the right depth.
+\end{itemize}
+
+\end{document}

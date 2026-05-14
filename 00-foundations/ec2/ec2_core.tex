@@ -1,0 +1,59 @@
+\documentclass[10pt,twocolumn]{article}
+\usepackage[scaled]{helvet}
+\renewcommand\familydefault{\sfdefault}
+\usepackage[T1]{fontenc}
+\usepackage[margin=0.7in]{geometry}
+\usepackage{titlesec}
+\usepackage{enumitem}
+\usepackage{parskip}
+\setlength{\columnsep}{0.24in}
+\setlist[itemize]{leftmargin=1.2em, topsep=0.2em, itemsep=0.18em}
+\titleformat{\section}{\large\bfseries}{\thesection}{1em}{}
+
+\begin{document}
+\title{\vspace{-1.6cm}AWS EC2 (Elastic Compute Cloud)}
+\author{AWS ML Study Notes}
+\date{}
+\maketitle
+\small
+
+\section*{Overview}
+EC2 gives you virtual machines on demand. You choose the instance family, operating system image, storage, networking, and scaling behavior, then AWS provides the compute capacity.
+
+For ML teams, EC2 matters because it is the most flexible way to run custom training, inference, data processing, and supporting services when managed abstractions are too restrictive.
+
+\section*{Core Concepts}
+\begin{itemize}
+\item Instance families are optimized for different workloads such as general purpose, compute optimized, memory optimized, storage optimized, or GPU accelerated.
+\item An EC2 instance is usually launched from an AMI and attached to EBS volumes inside a VPC. Security groups, IAM roles, and bootstrap scripts define how it behaves after launch.
+\item Pricing options include on demand, reserved, and spot. Cost and interruption tolerance should influence how you choose between them for ML workloads.
+\end{itemize}
+
+\section*{How It Works}
+\begin{itemize}
+\item You select an AMI, instance type, subnet, security group, IAM role, and storage layout. User data or configuration management then installs dependencies and starts services.
+\item If the instance hosts a long running service, it is usually placed behind a load balancer and managed by an Auto Scaling group for replacement and horizontal growth.
+\item If the instance hosts a one off training or data job, it can be provisioned, used, and terminated automatically as part of a workflow to avoid paying for idle compute.
+\end{itemize}
+
+\section*{AI and ML Relevance}
+\begin{itemize}
+\item EC2 is common when you need custom CUDA drivers, niche libraries, background agents, or low level operating system access that is awkward in more managed services.
+\item GPU instances support deep learning training and high throughput inference, while CPU instances often handle preprocessing, orchestration, and lightweight model serving.
+\end{itemize}
+
+\section*{Operational Notes}
+\begin{itemize}
+\item Patch management, kernel security, disk sizing, and monitoring are your responsibility on EC2. Flexibility comes with operational ownership.
+\item Use spot instances for fault tolerant training or batch processing, but combine them with checkpointing because the instance can be reclaimed.
+\item Right size aggressively. ML workloads can burn money quickly when overprovisioned GPUs or memory heavy instances are left running.
+\end{itemize}
+
+\section*{What To Remember}
+\begin{itemize}
+\item EC2 is infrastructure, not a platform. You gain control and lose convenience.
+\item EBS stores block data for the instance; S3 stores durable object data outside the instance.
+\item For production systems, think in terms of replacement and automation, not logging into a single pet server.
+\end{itemize}
+
+\end{document}

@@ -1,0 +1,59 @@
+\documentclass[10pt,twocolumn]{article}
+\usepackage[scaled]{helvet}
+\renewcommand\familydefault{\sfdefault}
+\usepackage[T1]{fontenc}
+\usepackage[margin=0.7in]{geometry}
+\usepackage{titlesec}
+\usepackage{enumitem}
+\usepackage{parskip}
+\setlength{\columnsep}{0.24in}
+\setlist[itemize]{leftmargin=1.2em, topsep=0.2em, itemsep=0.18em}
+\titleformat{\section}{\large\bfseries}{\thesection}{1em}{}
+
+\begin{document}
+\title{\vspace{-1.6cm}Project: Batch Inference on S3}
+\author{AWS ML Study Notes}
+\date{}
+\maketitle
+\small
+
+\section*{Overview}
+This project pattern scores large datasets asynchronously by reading inputs from S3, running offline inference, and writing prediction outputs back to S3. It is the right shape when throughput matters more than immediate per request latency.
+
+Batch inference is common for nightly recommendations, fraud review backlogs, document processing, or backfilling predictions across historical data.
+
+\section*{Core Concepts}
+\begin{itemize}
+\item The architecture typically includes S3 for input and output, an orchestration layer such as Step Functions or a scheduled pipeline, compute for preprocessing and inference, and monitoring for job status and quality.
+\item The inference engine may be SageMaker Batch Transform, a custom container job on ECS, or another managed compute path depending on the model and scaling requirements.
+\item Partitioning, manifest generation, idempotency, and result versioning are first class concerns because batch jobs are large and often retried.
+\end{itemize}
+
+\section*{How It Works}
+\begin{itemize}
+\item Raw input files land in S3 and are validated, partitioned, or converted into the format expected by the model runtime.
+\item The batch job reads the input, performs inference at scale, writes structured prediction outputs to a new S3 prefix, and emits completion metrics and error summaries.
+\item Downstream consumers then query or load the results into operational systems, dashboards, or further analytics pipelines.
+\end{itemize}
+
+\section*{AI and ML Relevance}
+\begin{itemize}
+\item This pattern is attractive when model initialization is heavy, data volumes are large, and the business can accept delayed delivery of results.
+\item It also creates a clean audit trail because both inputs and outputs are stored durably, versioned, and reprocessable if the model or logic changes.
+\end{itemize}
+
+\section*{Operational Notes}
+\begin{itemize}
+\item Design for retries and partial failures. Large batch jobs fail in the middle more often than teams expect.
+\item Store run metadata such as input version, model version, code version, and thresholds so you can explain later why a given output set looks the way it does.
+\item Optimize file sizes and parallelism. Too few giant files or too many tiny files can both hurt throughput and cost.
+\end{itemize}
+
+\section*{What To Remember}
+\begin{itemize}
+\item Batch inference is an offline factory, not an online API.
+\item Version every run so predictions remain traceable to their exact inputs and model.
+\item When data volume is high and latency is flexible, this pattern is often cheaper and operationally safer than always on real time serving.
+\end{itemize}
+
+\end{document}

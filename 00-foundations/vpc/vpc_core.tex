@@ -1,0 +1,59 @@
+\documentclass[10pt,twocolumn]{article}
+\usepackage[scaled]{helvet}
+\renewcommand\familydefault{\sfdefault}
+\usepackage[T1]{fontenc}
+\usepackage[margin=0.7in]{geometry}
+\usepackage{titlesec}
+\usepackage{enumitem}
+\usepackage{parskip}
+\setlength{\columnsep}{0.24in}
+\setlist[itemize]{leftmargin=1.2em, topsep=0.2em, itemsep=0.18em}
+\titleformat{\section}{\large\bfseries}{\thesection}{1em}{}
+
+\begin{document}
+\title{\vspace{-1.6cm}AWS VPC (Virtual Private Cloud)}
+\author{AWS ML Study Notes}
+\date{}
+\maketitle
+\small
+
+\section*{Overview}
+A VPC is your logically isolated network in AWS. It defines the IP range, subnets, routing, and traffic boundaries for the compute and managed services you place inside it.
+
+ML systems frequently handle sensitive data and expensive infrastructure, so network design matters. A good VPC layout reduces exposure, controls egress, and separates public entry points from private processing layers.
+
+\section*{Core Concepts}
+\begin{itemize}
+\item Subnets divide the VPC into smaller network zones, usually across multiple Availability Zones for resilience. Public subnets route to an internet gateway, while private subnets usually route outbound through a NAT or VPC endpoints.
+\item Security groups are stateful virtual firewalls attached to resources, while network ACLs are stateless controls applied at the subnet boundary.
+\item Route tables, VPC endpoints, peering, Transit Gateway, and DNS settings determine how traffic moves between services, accounts, and external networks.
+\end{itemize}
+
+\section*{How It Works}
+\begin{itemize}
+\item You choose a CIDR range, create subnets, attach route tables, define security controls, and then launch resources into the appropriate subnets.
+\item Private workloads such as databases, internal APIs, or SageMaker jobs can access AWS services through VPC endpoints without traversing the public internet.
+\item Ingress is usually limited to controlled entry points such as an Application Load Balancer, API Gateway integration, or VPN connection from trusted environments.
+\end{itemize}
+
+\section*{AI and ML Relevance}
+\begin{itemize}
+\item A common ML pattern is private training or inference infrastructure that reads data from S3 through endpoints and writes logs and metrics without needing public IP addresses.
+\item Network isolation is also important for compliance and for protecting proprietary models and feature data from accidental public exposure.
+\end{itemize}
+
+\section*{Operational Notes}
+\begin{itemize}
+\item Plan CIDR blocks early. Renumbering a VPC later is painful, especially when multiple accounts or peered networks are involved.
+\item Use multiple Availability Zones for resilience, and capture VPC Flow Logs when network troubleshooting or auditability matters.
+\item Do not overexpose resources by putting everything in public subnets. Public accessibility should be the exception, not the default.
+\end{itemize}
+
+\section*{What To Remember}
+\begin{itemize}
+\item Security groups normally express allowed flows better than broad subnet ACL rules.
+\item Public subnet does not mean the instance must be public. Internet reachability still depends on routing and public addressing.
+\item For secure ML platforms, private subnets plus endpoints are usually the baseline design.
+\end{itemize}
+
+\end{document}

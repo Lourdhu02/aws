@@ -1,0 +1,59 @@
+\documentclass[10pt,twocolumn]{article}
+\usepackage[scaled]{helvet}
+\renewcommand\familydefault{\sfdefault}
+\usepackage[T1]{fontenc}
+\usepackage[margin=0.7in]{geometry}
+\usepackage{titlesec}
+\usepackage{enumitem}
+\usepackage{parskip}
+\setlength{\columnsep}{0.24in}
+\setlist[itemize]{leftmargin=1.2em, topsep=0.2em, itemsep=0.18em}
+\titleformat{\section}{\large\bfseries}{\thesection}{1em}{}
+
+\begin{document}
+\title{\vspace{-1.6cm}Terraform for AWS ML Infrastructure}
+\author{AWS ML Study Notes}
+\date{}
+\maketitle
+\small
+
+\section*{Overview}
+Terraform is an infrastructure as code tool that describes cloud resources declaratively and converges the real environment toward that desired state. It is useful for making AWS environments reproducible, reviewable, and less dependent on console driven manual setup.
+
+In an ML platform, Terraform helps stabilize the foundation around networking, IAM roles, storage, compute platforms, and deployment targets so experiments are not blocked by inconsistent environments.
+
+\section*{Core Concepts}
+\begin{itemize}
+\item Terraform configurations declare resources, variables, outputs, providers, and modules. State tracks what Terraform believes exists so it can plan changes safely.
+\item Modules are important because ML platforms repeat patterns such as VPC layouts, endpoint roles, bucket policies, and monitoring stacks across environments.
+\item The key workflow is plan and apply. Teams review proposed infrastructure diffs before mutating shared environments.
+\end{itemize}
+
+\section*{How It Works}
+\begin{itemize}
+\item Engineers define infrastructure in code, initialize the provider, generate a plan, and review what resources will be created, updated, or destroyed.
+\item After approval, Terraform applies the changes and updates state so future plans compare against the latest known environment.
+\item CI and CD systems can validate formatting, policy rules, and plans before production changes are allowed to execute.
+\end{itemize}
+
+\section*{AI and ML Relevance}
+\begin{itemize}
+\item Terraform is valuable when ML systems span many AWS services and environments because manual provisioning makes reproducibility and compliance difficult.
+\item It also helps connect model deployment with the surrounding infrastructure, such as endpoint security groups, alarms, IAM roles, and data access boundaries.
+\end{itemize}
+
+\section*{Operational Notes}
+\begin{itemize}
+\item Protect Terraform state because it can contain sensitive identifiers and represents the source of truth for change planning.
+\item Prefer modules and naming conventions over copy paste infrastructure. Drift multiplies quickly when environments are hand assembled.
+\item Be cautious with destructive changes and review plans carefully. Infrastructure mistakes can impact data access, uptime, and cost at large scale.
+\end{itemize}
+
+\section*{What To Remember}
+\begin{itemize}
+\item Terraform makes infrastructure reviewable in the same way source code is reviewable.
+\item The plan output is where design intent meets operational reality. Read it carefully before applying.
+\item For ML teams, infrastructure as code is what turns one successful environment into a repeatable platform.
+\end{itemize}
+
+\end{document}

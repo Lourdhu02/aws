@@ -1,0 +1,59 @@
+\documentclass[10pt,twocolumn]{article}
+\usepackage[scaled]{helvet}
+\renewcommand\familydefault{\sfdefault}
+\usepackage[T1]{fontenc}
+\usepackage[margin=0.7in]{geometry}
+\usepackage{titlesec}
+\usepackage{enumitem}
+\usepackage{parskip}
+\setlength{\columnsep}{0.24in}
+\setlist[itemize]{leftmargin=1.2em, topsep=0.2em, itemsep=0.18em}
+\titleformat{\section}{\large\bfseries}{\thesection}{1em}{}
+
+\begin{document}
+\title{\vspace{-1.6cm}MLflow on AWS}
+\author{AWS ML Study Notes}
+\date{}
+\maketitle
+\small
+
+\section*{Overview}
+MLflow provides experiment tracking, model registry style capabilities, and artifact management for machine learning work. Running it on AWS makes it accessible to a team while using AWS storage, databases, and security controls.
+
+Its real value is organizational memory. It records what ran, with which parameters, on which data, and with what results so model development becomes auditable and comparable.
+
+\section*{Core Concepts}
+\begin{itemize}
+\item A typical MLflow setup includes a tracking server, a backend store for metadata, and an artifact store such as S3 for model files and plots.
+\item Runs capture parameters, metrics, tags, and artifacts. Registered models organize versioned outputs that teams may later evaluate or deploy.
+\item MLflow does not replace the entire production platform. It complements it by handling experiment lineage and model packaging at the experimentation layer.
+\end{itemize}
+
+\section*{How It Works}
+\begin{itemize}
+\item A notebook, script, or training job logs metrics and artifacts to the tracking server while the run is executing.
+\item Team members compare runs, inspect outputs, and decide which model versions deserve promotion, registration, or deeper evaluation.
+\item When integrated with an MLOps pipeline, an approved run can trigger packaging, validation, or deployment workflows in AWS.
+\end{itemize}
+
+\section*{AI and ML Relevance}
+\begin{itemize}
+\item MLflow is useful when multiple experiments, datasets, and parameter combinations are being tested and human memory is no longer reliable enough to track what worked.
+\item It also provides a bridge between ad hoc experimentation and operational model release by giving each promising artifact a stable identity and metadata trail.
+\end{itemize}
+
+\section*{Operational Notes}
+\begin{itemize}
+\item Protect the tracking server with authentication, network isolation, and backups for the metadata store. Experiment history is operationally important.
+\item Separate artifact storage from code repositories. Model outputs can be large and need lifecycle and retention management.
+\item Decide early which metadata fields are mandatory, or the run history will become inconsistent and hard to search.
+\end{itemize}
+
+\section*{What To Remember}
+\begin{itemize}
+\item MLflow answers what happened during experimentation; deployment systems answer what is live in production.
+\item Without disciplined logging, MLflow becomes a dump of half labeled runs. Governance needs conventions.
+\item For teams iterating quickly, experiment tracking is not optional once more than one person or one model is involved.
+\end{itemize}
+
+\end{document}

@@ -1,0 +1,59 @@
+\documentclass[10pt,twocolumn]{article}
+\usepackage[scaled]{helvet}
+\renewcommand\familydefault{\sfdefault}
+\usepackage[T1]{fontenc}
+\usepackage[margin=0.7in]{geometry}
+\usepackage{titlesec}
+\usepackage{enumitem}
+\usepackage{parskip}
+\setlength{\columnsep}{0.24in}
+\setlist[itemize]{leftmargin=1.2em, topsep=0.2em, itemsep=0.18em}
+\titleformat{\section}{\large\bfseries}{\thesection}{1em}{}
+
+\begin{document}
+\title{\vspace{-1.6cm}AWS API Gateway}
+\author{AWS ML Study Notes}
+\date{}
+\maketitle
+\small
+
+\section*{Overview}
+API Gateway is a managed front door for HTTP, REST, and WebSocket APIs. It receives client traffic, applies policies, and forwards requests to backend integrations.
+
+For ML applications, API Gateway often sits in front of inference services, orchestration Lambdas, or thin application layers that expose model capabilities to external consumers.
+
+\section*{Core Concepts}
+\begin{itemize}
+\item Core features include routing, request validation, throttling, authorization, custom domains, stage management, and integration mapping.
+\item Backends can be Lambda functions, HTTP services, private integrations, or other AWS services depending on the API design.
+\item Usage plans, API keys, authorizers, and logging help separate public access patterns from internal or partner access patterns.
+\end{itemize}
+
+\section*{How It Works}
+\begin{itemize}
+\item A client sends a request to the API endpoint, API Gateway applies authentication and request handling rules, then forwards the request to the configured integration.
+\item The backend returns a response, which API Gateway can transform, enrich with headers, or standardize before returning to the caller.
+\item Operational features such as throttling and stage based rollout help protect backends and manage gradual release of new behavior.
+\end{itemize}
+
+\section*{AI and ML Relevance}
+\begin{itemize}
+\item ML APIs benefit from API Gateway because it centralizes security, quotas, and routing policies before traffic reaches expensive inference components.
+\item It is also a clean way to expose asynchronous prediction patterns or file based workflows where the initial request starts work and later calls fetch results.
+\end{itemize}
+
+\section*{Operational Notes}
+\begin{itemize}
+\item Be aware of payload sizes, timeout limits, and latency overhead. Not every inference pattern fits cleanly through a synchronous API boundary.
+\item Use structured request validation and authorization rather than trusting each backend to implement every guard consistently.
+\item Logging and correlation identifiers matter. When an inference path spans API Gateway, Lambda, and a model backend, debugging needs end to end traceability.
+\end{itemize}
+
+\section*{What To Remember}
+\begin{itemize}
+\item API Gateway is the contract boundary, not the business logic itself.
+\item It protects and shapes backend access; it does not replace backend capacity planning.
+\item In ML systems, think about cost per request and latency amplification before exposing a heavy model behind a public API.
+\end{itemize}
+
+\end{document}

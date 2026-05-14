@@ -1,0 +1,59 @@
+\documentclass[10pt,twocolumn]{article}
+\usepackage[scaled]{helvet}
+\renewcommand\familydefault{\sfdefault}
+\usepackage[T1]{fontenc}
+\usepackage[margin=0.7in]{geometry}
+\usepackage{titlesec}
+\usepackage{enumitem}
+\usepackage{parskip}
+\setlength{\columnsep}{0.24in}
+\setlist[itemize]{leftmargin=1.2em, topsep=0.2em, itemsep=0.18em}
+\titleformat{\section}{\large\bfseries}{\thesection}{1em}{}
+
+\begin{document}
+\title{\vspace{-1.6cm}AWS RDS (Relational Database Service)}
+\author{AWS ML Study Notes}
+\date{}
+\maketitle
+\small
+
+\section*{Overview}
+RDS is AWS managed relational database infrastructure for engines such as PostgreSQL, MySQL, MariaDB, SQL Server, Oracle, and Aurora variants. It handles much of the undifferentiated database operations work while preserving the relational model.
+
+Relational systems remain important in ML platforms because not every dataset is a data lake object. Metadata, transactional application data, user records, and workflow state often fit better in a relational store.
+
+\section*{Core Concepts}
+\begin{itemize}
+\item RDS manages backups, patching windows, storage, failover features, and monitoring integrations, while the database engine still enforces schemas, indexes, and SQL semantics.
+\item Important design dimensions include engine choice, Multi Availability Zone deployment, read replicas, storage performance, and connection management.
+\item Aurora is related but distinct. It offers a cloud optimized relational engine with different performance and scaling characteristics compared with standard RDS engines.
+\end{itemize}
+
+\section*{How It Works}
+\begin{itemize}
+\item You provision the database into subnets within a VPC, secure it with security groups, and connect applications through standard database drivers.
+\item Applications issue SQL queries or transactions, while RDS handles storage, backups, failover settings, and many operational hooks in the background.
+\item Read replicas or analytics exports can separate operational read pressure from write heavy transactional workloads.
+\end{itemize}
+
+\section*{AI and ML Relevance}
+\begin{itemize}
+\item In ML environments, RDS often stores application ground truth, labeling workflow state, feature metadata, audit records, or model deployment metadata that benefits from strong consistency and joins.
+\item It can also act as an operational system of record whose data is later extracted into S3 and transformed for training or reporting.
+\end{itemize}
+
+\section*{Operational Notes}
+\begin{itemize}
+\item Manage schema changes deliberately. Database migrations are production changes and should be treated with the same care as application deployment.
+\item Watch connection counts carefully when serverless or autoscaling clients are involved. Connection storms are a classic failure mode with relational backends.
+\item Choose RDS for relational access patterns, not as a default container for any data just because SQL is familiar.
+\end{itemize}
+
+\section*{What To Remember}
+\begin{itemize}
+\item RDS is about managed operations around relational databases, not a new data model.
+\item Strong consistency and relational joins are the main reasons to use it in ML systems.
+\item If access patterns are simple key based lookups at very high scale, DynamoDB may be a better fit than forcing the problem into SQL.
+\end{itemize}
+
+\end{document}

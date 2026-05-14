@@ -1,0 +1,59 @@
+\documentclass[10pt,twocolumn]{article}
+\usepackage[scaled]{helvet}
+\renewcommand\familydefault{\sfdefault}
+\usepackage[T1]{fontenc}
+\usepackage[margin=0.7in]{geometry}
+\usepackage{titlesec}
+\usepackage{enumitem}
+\usepackage{parskip}
+\setlength{\columnsep}{0.24in}
+\setlist[itemize]{leftmargin=1.2em, topsep=0.2em, itemsep=0.18em}
+\titleformat{\section}{\large\bfseries}{\thesection}{1em}{}
+
+\begin{document}
+\title{\vspace{-1.6cm}AWS ECR (Elastic Container Registry)}
+\author{AWS ML Study Notes}
+\date{}
+\maketitle
+\small
+
+\section*{Overview}
+ECR is AWS managed container image storage. It holds versioned Docker and OCI images that other services can pull when they need to start a container.
+
+For ML teams, ECR is where custom training images, inference images, and utility containers are stored so that deployments are reproducible and centrally managed.
+
+\section*{Core Concepts}
+\begin{itemize}
+\item Repositories group related images, while tags and digests identify specific builds. Digests are immutable and better for strict reproducibility than floating tags.
+\item ECR supports vulnerability scanning, lifecycle policies, encryption, and repository policies for cross account sharing.
+\item Authentication is integrated with IAM. Build systems and runtimes usually obtain temporary credentials and then push or pull images through the ECR API.
+\end{itemize}
+
+\section*{How It Works}
+\begin{itemize}
+\item A CI system builds the image, runs tests, tags it, and pushes it to an ECR repository.
+\item Services such as ECS, SageMaker, or Lambda container images then pull the image when creating or updating a workload.
+\item Multi account setups often replicate approved images from a build account into runtime accounts to separate software production from software consumption.
+\end{itemize}
+
+\section*{AI and ML Relevance}
+\begin{itemize}
+\item ML inference containers often include model servers, preprocessing logic, and optimized native libraries. ECR ensures those dependencies are packaged consistently across environments.
+\item Training images in ECR let you standardize frameworks, CUDA libraries, and internal tooling for repeatable experiments and pipelines.
+\end{itemize}
+
+\section*{Operational Notes}
+\begin{itemize}
+\item Avoid using mutable tags such as latest as the only deployment reference. Use digests or versioned tags in release automation.
+\item Enable lifecycle policies so old image layers do not accumulate forever and quietly increase storage cost.
+\item Scan images, patch base layers regularly, and keep the build chain deterministic so security and debugging stay tractable.
+\end{itemize}
+
+\section*{What To Remember}
+\begin{itemize}
+\item ECR stores images; ECS, EKS, SageMaker, and Lambda run them.
+\item Tagging is for convenience. Digests are for certainty.
+\item Treat the container registry as part of the software supply chain, not just as storage.
+\end{itemize}
+
+\end{document}

@@ -1,0 +1,59 @@
+\documentclass[10pt,twocolumn]{article}
+\usepackage[scaled]{helvet}
+\renewcommand\familydefault{\sfdefault}
+\usepackage[T1]{fontenc}
+\usepackage[margin=0.7in]{geometry}
+\usepackage{titlesec}
+\usepackage{enumitem}
+\usepackage{parskip}
+\setlength{\columnsep}{0.24in}
+\setlist[itemize]{leftmargin=1.2em, topsep=0.2em, itemsep=0.18em}
+\titleformat{\section}{\large\bfseries}{\thesection}{1em}{}
+
+\begin{document}
+\title{\vspace{-1.6cm}AWS DynamoDB}
+\author{AWS ML Study Notes}
+\date{}
+\maketitle
+\small
+
+\section*{Overview}
+DynamoDB is AWS's managed key value and document database. It is designed for high scale, predictable low latency access patterns, and minimal operational overhead.
+
+In ML systems, DynamoDB is often useful at the serving edge where request latency matters and the access pattern is known ahead of time.
+
+\section*{Core Concepts}
+\begin{itemize}
+\item The primary design unit is the table with a partition key and optional sort key. Secondary indexes support alternate query patterns, but they should be designed intentionally.
+\item Capacity can be provisioned or on demand, and features such as TTL, streams, and transactions extend the base storage model for event driven and operational use cases.
+\item Data modeling starts from access patterns, not from trying to normalize relationships the way you would in a relational schema.
+\end{itemize}
+
+\section*{How It Works}
+\begin{itemize}
+\item An application writes or reads items by key, query, or scan, though scans should be treated cautiously because they are rarely the right production access pattern.
+\item Streams can publish item changes to downstream systems, which is useful for event driven enrichment or cache invalidation flows.
+\item Global tables or replication patterns can support multi region designs when low latency or resilience requirements justify the complexity.
+\end{itemize}
+
+\section*{AI and ML Relevance}
+\begin{itemize}
+\item DynamoDB is a strong fit for feature lookups, prediction caches, idempotency records, session state, or metadata that must be served quickly during inference.
+\item It is also useful when upstream ML results need to be materialized into an application friendly structure for user facing workloads.
+\end{itemize}
+
+\section*{Operational Notes}
+\begin{itemize}
+\item Hot partitions are a common failure mode. If the partition key concentrates too much traffic, the table can suffer throttling even when the aggregate capacity seems sufficient.
+\item Model the access pattern first and test it under realistic request skew. A clean schema on paper is not enough if runtime traffic clusters badly.
+\item Use scans sparingly, watch item sizes, and understand consistency choices so performance behavior is deliberate rather than accidental.
+\end{itemize}
+
+\section*{What To Remember}
+\begin{itemize}
+\item DynamoDB rewards access pattern driven design and punishes generic relational instincts.
+\item Low latency comes from the right key design, not from magical auto scaling alone.
+\item For inference systems, it is often the supporting state store, not the place where large training datasets belong.
+\end{itemize}
+
+\end{document}

@@ -1,0 +1,59 @@
+\documentclass[10pt,twocolumn]{article}
+\usepackage[scaled]{helvet}
+\renewcommand\familydefault{\sfdefault}
+\usepackage[T1]{fontenc}
+\usepackage[margin=0.7in]{geometry}
+\usepackage{titlesec}
+\usepackage{enumitem}
+\usepackage{parskip}
+\setlength{\columnsep}{0.24in}
+\setlist[itemize]{leftmargin=1.2em, topsep=0.2em, itemsep=0.18em}
+\titleformat{\section}{\large\bfseries}{\thesection}{1em}{}
+
+\begin{document}
+\title{\vspace{-1.6cm}Project: Model Deployment Pipeline}
+\author{AWS ML Study Notes}
+\date{}
+\maketitle
+\small
+
+\section*{Overview}
+A model deployment pipeline is the automation path that takes an approved model artifact and promotes it safely into a serving environment. It is where ML engineering becomes operational discipline.
+
+The goal is not only speed. The goal is repeatability, traceability, rollback capability, and separation between experimentation and production mutation.
+
+\section*{Core Concepts}
+\begin{itemize}
+\item Typical building blocks include a model registry or artifact store, automated validation, security checks, deployment targets, approval gates, and post deployment monitoring hooks.
+\item The pipeline should bind together model version, container image version, infrastructure configuration, and release metadata so the production state is fully reconstructable.
+\item Release patterns may include staging, canary, shadow, blue green, or weighted rollout depending on the serving platform and risk tolerance.
+\end{itemize}
+
+\section*{How It Works}
+\begin{itemize}
+\item A training or evaluation workflow registers a candidate model and stores its metrics and artifacts in a form the deployment system can trust.
+\item Deployment automation validates the artifact, updates the serving configuration, shifts traffic according to the selected release strategy, and watches health and quality signals.
+\item If checks fail, the pipeline rolls back automatically or halts for investigation, preserving both uptime and release confidence.
+\end{itemize}
+
+\section*{AI and ML Relevance}
+\begin{itemize}
+\item This project is central to production ML because a good model in a notebook has no value unless it can be released safely and repeatedly.
+\item It also enables governance by making promotion criteria explicit instead of relying on ad hoc approvals in chat or email.
+\end{itemize}
+
+\section*{Operational Notes}
+\begin{itemize}
+\item Do not deploy from loose files or untracked notebook outputs. Promote only immutable, versioned artifacts produced by trusted automation.
+\item Separate technical health checks from model quality checks. A service can be up while prediction behavior is wrong.
+\item Rollback design should be exercised before an incident. The first rollback should not happen under panic conditions.
+\end{itemize}
+
+\section*{What To Remember}
+\begin{itemize}
+\item The deployment pipeline is the contract between data science output and production reality.
+\item Immutable artifacts and observable rollout strategy are the backbone of safe release.
+\item If production cannot be traced back to a specific model version and image version, the pipeline is incomplete.
+\end{itemize}
+
+\end{document}

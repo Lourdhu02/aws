@@ -1,0 +1,59 @@
+\documentclass[10pt,twocolumn]{article}
+\usepackage[scaled]{helvet}
+\renewcommand\familydefault{\sfdefault}
+\usepackage[T1]{fontenc}
+\usepackage[margin=0.7in]{geometry}
+\usepackage{titlesec}
+\usepackage{enumitem}
+\usepackage{parskip}
+\setlength{\columnsep}{0.24in}
+\setlist[itemize]{leftmargin=1.2em, topsep=0.2em, itemsep=0.18em}
+\titleformat{\section}{\large\bfseries}{\thesection}{1em}{}
+
+\begin{document}
+\title{\vspace{-1.6cm}AWS CloudTrail}
+\author{AWS ML Study Notes}
+\date{}
+\maketitle
+\small
+
+\section*{Overview}
+CloudTrail records AWS API activity. It is the audit log of who called what, from where, and when across your AWS accounts.
+
+This matters in ML platforms because operational and security incidents often revolve around control plane changes: a role was broadened, a training job was launched, an endpoint was deleted, or a bucket policy changed.
+
+\section*{Core Concepts}
+\begin{itemize}
+\item Management events cover control plane actions such as creating resources or changing permissions. Data events cover high volume object or item level activity for selected services such as S3.
+\item Trails can be account scoped or organization wide, and their logs are usually delivered to S3 with optional integration into analytics or alerting systems.
+\item CloudTrail Lake and event history features provide additional ways to search and analyze activity, but the core value remains reliable auditability.
+\end{itemize}
+
+\section*{How It Works}
+\begin{itemize}
+\item A user, role, or service calls an AWS API. CloudTrail records the event metadata and writes it into the configured delivery and retention path.
+\item Security teams or operators query those logs to answer investigative questions such as who changed this policy, which role deleted the endpoint, or when access started failing.
+\item CloudTrail records can also drive detections when sensitive actions occur outside expected automation paths.
+\end{itemize}
+
+\section*{AI and ML Relevance}
+\begin{itemize}
+\item CloudTrail helps prove whether a model deployment was automated, whether a dataset bucket was accessed unexpectedly, or whether a training cluster was launched by a human rather than by the approved pipeline.
+\item It is also useful for governance because regulated ML workloads need change history around access, release, and data handling operations.
+\end{itemize}
+
+\section*{Operational Notes}
+\begin{itemize}
+\item Enable organization wide coverage where possible, and protect the destination logs from tampering with strong access controls and retention design.
+\item Data events can be high volume and higher cost, so enable them where their investigative value is worth the overhead.
+\item CloudTrail is most useful before an incident, not after. Missing audit coverage cannot be reconstructed retroactively.
+\end{itemize}
+
+\section*{What To Remember}
+\begin{itemize}
+\item CloudWatch tells you a system is unhealthy; CloudTrail often tells you what changed.
+\item It is an audit and governance service, not a performance monitoring tool.
+\item In mature ML environments, every production change path should be traceable through CloudTrail records.
+\end{itemize}
+
+\end{document}

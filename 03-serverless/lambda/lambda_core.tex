@@ -1,0 +1,59 @@
+\documentclass[10pt,twocolumn]{article}
+\usepackage[scaled]{helvet}
+\renewcommand\familydefault{\sfdefault}
+\usepackage[T1]{fontenc}
+\usepackage[margin=0.7in]{geometry}
+\usepackage{titlesec}
+\usepackage{enumitem}
+\usepackage{parskip}
+\setlength{\columnsep}{0.24in}
+\setlist[itemize]{leftmargin=1.2em, topsep=0.2em, itemsep=0.18em}
+\titleformat{\section}{\large\bfseries}{\thesection}{1em}{}
+
+\begin{document}
+\title{\vspace{-1.6cm}AWS Lambda}
+\author{AWS ML Study Notes}
+\date{}
+\maketitle
+\small
+
+\section*{Overview}
+Lambda is AWS's event driven serverless compute service. You upload code or a container image, define triggers, and AWS runs the function when events arrive.
+
+Its strength is removing server management for short lived tasks. It works best when the unit of work is discrete, stateless, and can tolerate cold start behavior within the required latency envelope.
+
+\section*{Core Concepts}
+\begin{itemize}
+\item A Lambda function has a handler, runtime, memory allocation, timeout, execution role, and optionally layers or a container image package.
+\item Triggers can come from API Gateway, S3 events, EventBridge, queues, streams, Step Functions, and many other AWS sources.
+\item Concurrency settings, retries, dead letter handling, and event source mappings shape how the function behaves under load or failure.
+\end{itemize}
+
+\section*{How It Works}
+\begin{itemize}
+\item An event arrives, AWS allocates or reuses an execution environment, and the handler runs with temporary credentials from the function role.
+\item The function typically reads payload data, calls AWS services or external APIs, and returns a response or writes outputs to storage or queues.
+\item If traffic spikes, Lambda scales horizontally by creating more execution environments until quotas or downstream limits are reached.
+\end{itemize}
+
+\section*{AI and ML Relevance}
+\begin{itemize}
+\item Lambda is useful for data validation, feature preprocessing, lightweight inference, orchestration glue, model trigger logic, and event driven postprocessing around a larger ML system.
+\item It is also a strong companion to S3 driven workflows, where object arrival triggers enrichment or dispatch into downstream training or scoring pipelines.
+\end{itemize}
+
+\section*{Operational Notes}
+\begin{itemize}
+\item Package size, startup time, and dependency bloat directly affect cold starts. Heavy ML frameworks can make Lambda a poor fit for synchronous inference.
+\item Tune memory and timeout based on actual runtime behavior. More memory can increase CPU allocation and reduce execution time enough to improve both latency and cost.
+\item Protect downstream services with queues, reserved concurrency, or backpressure aware designs. Lambda can scale faster than the systems it calls.
+\end{itemize}
+
+\section*{What To Remember}
+\begin{itemize}
+\item Lambda is excellent glue code, but it is not magic. Some workloads still need containers or managed endpoints.
+\item Cold starts matter most when latency is user facing and the runtime package is large.
+\item Think event contract first, function code second. Good serverless systems are driven by clear events and failure handling.
+\end{itemize}
+
+\end{document}

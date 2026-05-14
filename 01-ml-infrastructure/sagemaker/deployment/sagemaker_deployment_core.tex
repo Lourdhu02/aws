@@ -1,0 +1,59 @@
+\documentclass[10pt,twocolumn]{article}
+\usepackage[scaled]{helvet}
+\renewcommand\familydefault{\sfdefault}
+\usepackage[T1]{fontenc}
+\usepackage[margin=0.7in]{geometry}
+\usepackage{titlesec}
+\usepackage{enumitem}
+\usepackage{parskip}
+\setlength{\columnsep}{0.24in}
+\setlist[itemize]{leftmargin=1.2em, topsep=0.2em, itemsep=0.18em}
+\titleformat{\section}{\large\bfseries}{\thesection}{1em}{}
+
+\begin{document}
+\title{\vspace{-1.6cm}AWS SageMaker Deployment}
+\author{AWS ML Study Notes}
+\date{}
+\maketitle
+\small
+
+\section*{Overview}
+SageMaker Deployment turns trained models into managed inference endpoints or batch inference jobs. It packages model artifacts, container logic, scaling behavior, and network settings into a serving configuration.
+
+The value is operational consistency. Teams can promote models through controlled environments instead of treating deployment as a manual afterthought.
+
+\section*{Core Concepts}
+\begin{itemize}
+\item A deployment usually starts with a model definition that points to the serving image and the model artifact in S3.
+\item Endpoint configurations describe instance types, variant weights, autoscaling behavior, or specialized modes such as asynchronous or serverless inference.
+\item SageMaker supports patterns such as multi model endpoints, blue green style updates through variants, and data capture for later monitoring.
+\end{itemize}
+
+\section*{How It Works}
+\begin{itemize}
+\item After a model is approved, the deployment system creates or updates the endpoint configuration and then rolls traffic to the new endpoint variant.
+\item Clients send inference requests to the hosted endpoint, while logs, metrics, and optionally request payload capture flow to surrounding AWS services.
+\item For offline scoring, the same model package can be used in batch transform rather than a permanently running real time endpoint.
+\end{itemize}
+
+\section*{AI and ML Relevance}
+\begin{itemize}
+\item Deployment design affects latency, throughput, cost, and release safety. The right mode depends on traffic profile, payload size, and how quickly results are needed.
+\item ML teams also care about safe promotion, shadowing, rollback, and post deployment quality checks because correctness drift can be more subtle than simple uptime failures.
+\end{itemize}
+
+\section*{Operational Notes}
+\begin{itemize}
+\item Use autoscaling carefully. If cold starts or model load time are high, a low minimum instance count can cause unstable latency.
+\item Capture inference data where governance allows it so you can debug failure cases, audit outcomes, and build monitoring or retraining signals.
+\item Separate release approval from endpoint mutation. Production deployment should be traceable to a specific model version and image version.
+\end{itemize}
+
+\section*{What To Remember}
+\begin{itemize}
+\item Training creates a model artifact; deployment turns it into a callable service contract.
+\item Real time, asynchronous, serverless, and batch inference exist for different traffic and cost profiles.
+\item The hardest part is rarely the API call. It is the release discipline around versions, rollbacks, and observability.
+\end{itemize}
+
+\end{document}

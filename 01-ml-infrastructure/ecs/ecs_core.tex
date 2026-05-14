@@ -1,0 +1,59 @@
+\documentclass[10pt,twocolumn]{article}
+\usepackage[scaled]{helvet}
+\renewcommand\familydefault{\sfdefault}
+\usepackage[T1]{fontenc}
+\usepackage[margin=0.7in]{geometry}
+\usepackage{titlesec}
+\usepackage{enumitem}
+\usepackage{parskip}
+\setlength{\columnsep}{0.24in}
+\setlist[itemize]{leftmargin=1.2em, topsep=0.2em, itemsep=0.18em}
+\titleformat{\section}{\large\bfseries}{\thesection}{1em}{}
+
+\begin{document}
+\title{\vspace{-1.6cm}AWS ECS (Elastic Container Service)}
+\author{AWS ML Study Notes}
+\date{}
+\maketitle
+\small
+
+\section*{Overview}
+ECS is AWS managed container orchestration. It schedules containers onto compute capacity and keeps services running according to the task definition you declare.
+
+For ML applications, ECS is a practical choice for serving models, running supporting APIs, and executing recurring preprocessing or postprocessing jobs without managing Kubernetes.
+
+\section*{Core Concepts}
+\begin{itemize}
+\item Core objects include clusters, task definitions, tasks, and services. A task definition describes the containers, CPU, memory, networking, secrets, and startup behavior.
+\item ECS can run on EC2 instances that you manage or on Fargate, where AWS manages the underlying servers.
+\item Services maintain a desired number of healthy tasks and integrate with load balancers, service discovery, and deployment strategies.
+\end{itemize}
+
+\section*{How It Works}
+\begin{itemize}
+\item You package the application as a container, store it in ECR, create a task definition, and then run it as a task or a service.
+\item For a long running inference API, ECS typically deploys tasks behind an Application Load Balancer and scales them based on CPU, memory, request count, or custom metrics.
+\item For scheduled or event driven jobs, ECS can launch short lived tasks that process a queue, transform data, or prepare artifacts for later training or inference stages.
+\end{itemize}
+
+\section*{AI and ML Relevance}
+\begin{itemize}
+\item ECS works well for FastAPI model servers, embedding services, feature preprocessing workers, and internal tools that need container consistency but not the full weight of a larger platform.
+\item If your inference stack depends on custom native libraries or multiple sidecars, ECS often gives a cleaner operational model than forcing everything into a serverless boundary.
+\end{itemize}
+
+\section*{Operational Notes}
+\begin{itemize}
+\item Right size task resources and container concurrency. Overcommitting CPU or memory leads to noisy failures and bad latency under load.
+\item Use IAM task roles, central logging, health checks, and rolling deployments so the service can update without downtime.
+\item Fargate reduces operational work, but EC2 backed ECS may be cheaper or more flexible for heavy GPU or host level customization requirements.
+\end{itemize}
+
+\section*{What To Remember}
+\begin{itemize}
+\item Task definition is the runtime contract. Service is the controller that keeps tasks alive.
+\item Fargate optimizes convenience; EC2 launch type optimizes control.
+\item ECS is a strong middle ground when you want containers without adopting Kubernetes complexity.
+\end{itemize}
+
+\end{document}

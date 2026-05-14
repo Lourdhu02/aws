@@ -1,0 +1,59 @@
+\documentclass[10pt,twocolumn]{article}
+\usepackage[scaled]{helvet}
+\renewcommand\familydefault{\sfdefault}
+\usepackage[T1]{fontenc}
+\usepackage[margin=0.7in]{geometry}
+\usepackage{titlesec}
+\usepackage{enumitem}
+\usepackage{parskip}
+\setlength{\columnsep}{0.24in}
+\setlist[itemize]{leftmargin=1.2em, topsep=0.2em, itemsep=0.18em}
+\titleformat{\section}{\large\bfseries}{\thesection}{1em}{}
+
+\begin{document}
+\title{\vspace{-1.6cm}AWS Athena}
+\author{AWS ML Study Notes}
+\date{}
+\maketitle
+\small
+
+\section*{Overview}
+Athena is a serverless interactive query service for data stored in S3. It lets you run SQL over files without provisioning or managing a dedicated analytics cluster.
+
+It is valuable in ML workflows because teams need a fast way to inspect datasets, validate assumptions, sample training windows, and investigate predictions without building separate infrastructure first.
+
+\section*{Core Concepts}
+\begin{itemize}
+\item Athena uses schema on read, usually through the Glue Data Catalog, which means the meaning of the data is defined at query time rather than baked into a database load step.
+\item Performance and cost depend heavily on file format, compression, partitioning, and how much data each query scans.
+\item Workgroups, query result locations, and access controls help separate exploratory use from governed production style use.
+\end{itemize}
+
+\section*{How It Works}
+\begin{itemize}
+\item Data is stored in S3, a table definition describes where it lives and how it is structured, and Athena executes SQL against that definition using an underlying distributed engine.
+\item Query results are written back to S3 and can be inspected directly, consumed by notebooks, or used to feed later data processing or reporting steps.
+\item Athena is often used iteratively: explore raw data, refine filters, validate counts, and then codify the proven logic in a more formal pipeline if it becomes recurring.
+\end{itemize}
+
+\section*{AI and ML Relevance}
+\begin{itemize}
+\item Athena is useful for exploring labeling quality, checking class imbalance, auditing inference logs, and quickly slicing large event datasets before training decisions are made.
+\item It also complements Glue well, because cataloged curated datasets become directly queryable for both analysts and ML engineers.
+\end{itemize}
+
+\section*{Operational Notes}
+\begin{itemize}
+\item Small files and poor partitions make Athena expensive and slow. File layout is not an implementation detail; it is part of performance design.
+\item Prefer columnar formats like Parquet for analytical workloads so only relevant columns are scanned.
+\item Athena is great for exploration and light operational analytics, but not a replacement for every transactional or low latency query requirement.
+\end{itemize}
+
+\section*{What To Remember}
+\begin{itemize}
+\item Serverless SQL is convenient, but the data still needs structure and discipline.
+\item You pay largely for scanned data, so data layout drives cost.
+\item Athena is often the shortest path from raw S3 data to a useful answer during ML investigation.
+\end{itemize}
+
+\end{document}

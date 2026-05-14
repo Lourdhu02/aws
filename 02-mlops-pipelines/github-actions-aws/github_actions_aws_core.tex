@@ -1,0 +1,59 @@
+\documentclass[10pt,twocolumn]{article}
+\usepackage[scaled]{helvet}
+\renewcommand\familydefault{\sfdefault}
+\usepackage[T1]{fontenc}
+\usepackage[margin=0.7in]{geometry}
+\usepackage{titlesec}
+\usepackage{enumitem}
+\usepackage{parskip}
+\setlength{\columnsep}{0.24in}
+\setlist[itemize]{leftmargin=1.2em, topsep=0.2em, itemsep=0.18em}
+\titleformat{\section}{\large\bfseries}{\thesection}{1em}{}
+
+\begin{document}
+\title{\vspace{-1.6cm}GitHub Actions with AWS}
+\author{AWS ML Study Notes}
+\date{}
+\maketitle
+\small
+
+\section*{Overview}
+GitHub Actions is a CI and automation system that runs directly from a GitHub repository. When paired with AWS, it becomes a common control plane for testing, packaging, and deploying cloud workloads from version controlled changes.
+
+For many teams, GitHub Actions is attractive because code review, merge policy, and build automation all live in the same developer workflow.
+
+\section*{Core Concepts}
+\begin{itemize}
+\item Workflows are defined in YAML and contain jobs and steps that run on GitHub hosted or self hosted runners.
+\item The most secure AWS integration pattern is usually OpenID Connect role assumption, which lets GitHub obtain short lived AWS credentials without storing static secrets.
+\item Reusable workflows, environment protections, artifact passing, and matrix execution help scale the setup across multiple services or model variants.
+\end{itemize}
+
+\section*{How It Works}
+\begin{itemize}
+\item A pull request or push event triggers the workflow, which then runs tests, linters, packaging steps, and security checks.
+\item If deployment is allowed, the workflow assumes an AWS role and performs actions such as pushing an image to ECR, updating ECS, invoking a SageMaker pipeline, or applying infrastructure changes.
+\item Workflow status feeds back into the repository so release readiness is visible during code review rather than after a merge.
+\end{itemize}
+
+\section*{AI and ML Relevance}
+\begin{itemize}
+\item GitHub Actions is often used to build training and inference containers, validate ML API code, trigger retraining workflows, or gate model deployment on evaluation outputs.
+\item It also helps when the ML platform spans more than AWS alone, because GitHub can coordinate multi system automation from one source change event.
+\end{itemize}
+
+\section*{Operational Notes}
+\begin{itemize}
+\item Pin third party actions to trusted versions, avoid overprivileged tokens, and prefer OIDC over long lived AWS keys.
+\item Use environment protections and branch rules so production credentials are reachable only from reviewed code paths.
+\item Do not overload one workflow with every responsibility. Smaller purpose built workflows are easier to secure and troubleshoot.
+\end{itemize}
+
+\section*{What To Remember}
+\begin{itemize}
+\item GitHub Actions owns repository centered automation; AWS owns the runtime resources.
+\item OIDC role assumption is the modern security baseline for GitHub to AWS federation.
+\item For ML teams, the tool is most useful when connected to clear quality gates rather than only to deployment mechanics.
+\end{itemize}
+
+\end{document}

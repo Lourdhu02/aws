@@ -1,0 +1,59 @@
+\documentclass[10pt,twocolumn]{article}
+\usepackage[scaled]{helvet}
+\renewcommand\familydefault{\sfdefault}
+\usepackage[T1]{fontenc}
+\usepackage[margin=0.7in]{geometry}
+\usepackage{titlesec}
+\usepackage{enumitem}
+\usepackage{parskip}
+\setlength{\columnsep}{0.24in}
+\setlist[itemize]{leftmargin=1.2em, topsep=0.2em, itemsep=0.18em}
+\titleformat{\section}{\large\bfseries}{\thesection}{1em}{}
+
+\begin{document}
+\title{\vspace{-1.6cm}AWS CloudWatch}
+\author{AWS ML Study Notes}
+\date{}
+\maketitle
+\small
+
+\section*{Overview}
+CloudWatch is AWS's monitoring and observability platform for metrics, logs, alarms, dashboards, and event driven reactions. It is where many AWS workloads publish the signals needed to understand health and performance.
+
+For ML systems, observability is not limited to uptime. You also need visibility into latency, throughput, cost behavior, data freshness, and signals that may hint at model quality issues.
+
+\section*{Core Concepts}
+\begin{itemize}
+\item Metrics represent numeric time series such as CPU load, request count, endpoint latency, or custom business measurements.
+\item Logs capture detailed execution records from services such as Lambda, ECS, and SageMaker training or inference jobs.
+\item Alarms, anomaly detection, dashboards, metric math, and event routing let operators turn raw telemetry into operational action.
+\end{itemize}
+
+\section*{How It Works}
+\begin{itemize}
+\item Workloads emit logs and metrics automatically or through custom instrumentation. CloudWatch stores and indexes those signals.
+\item Operators define dashboards and alarms that react to thresholds, rate changes, missing heartbeats, or composite conditions.
+\item Triggered alarms can notify humans, start automations, or feed incident workflows through SNS, EventBridge, or other integrations.
+\end{itemize}
+
+\section*{AI and ML Relevance}
+\begin{itemize}
+\item For ML, CloudWatch tracks endpoint latency, error rate, queue depth, training job duration, GPU utilization proxies, and other indicators that affect both customer experience and cost.
+\item Custom metrics can also represent domain signals such as low confidence prediction counts, fallback rate, or the volume of data rejected by validation logic.
+\end{itemize}
+
+\section*{Operational Notes}
+\begin{itemize}
+\item Choose metrics intentionally. High cardinality dimensions and noisy custom metrics can create cost and usability problems.
+\item Logs need retention policies and parsing conventions, or they become expensive text dumps that nobody can search effectively during an incident.
+\item Monitoring does not equal understanding model quality, but it provides the operational surface where model issues first become visible in production.
+\end{itemize}
+
+\section*{What To Remember}
+\begin{itemize}
+\item Metrics answer how much and how often; logs answer what happened in detail.
+\item Alarms should be actionable. If a page fires and nobody knows what to do, the signal design is weak.
+\item For ML systems, combine infrastructure telemetry with business and model oriented telemetry to avoid blind spots.
+\end{itemize}
+
+\end{document}

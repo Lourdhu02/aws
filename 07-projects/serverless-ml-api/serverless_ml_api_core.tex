@@ -1,0 +1,59 @@
+\documentclass[10pt,twocolumn]{article}
+\usepackage[scaled]{helvet}
+\renewcommand\familydefault{\sfdefault}
+\usepackage[T1]{fontenc}
+\usepackage[margin=0.7in]{geometry}
+\usepackage{titlesec}
+\usepackage{enumitem}
+\usepackage{parskip}
+\setlength{\columnsep}{0.24in}
+\setlist[itemize]{leftmargin=1.2em, topsep=0.2em, itemsep=0.18em}
+\titleformat{\section}{\large\bfseries}{\thesection}{1em}{}
+
+\begin{document}
+\title{\vspace{-1.6cm}Project: Serverless ML API}
+\author{AWS ML Study Notes}
+\date{}
+\maketitle
+\small
+
+\section*{Overview}
+A serverless ML API exposes model functionality through a managed API layer and event driven or on demand compute instead of continuously running servers. The design trades infrastructure simplicity against packaging and latency constraints.
+
+It is a good pattern for intermittent usage, control plane operations around models, or lightweight inference that does not justify an always on fleet.
+
+\section*{Core Concepts}
+\begin{itemize}
+\item The typical stack is API Gateway plus Lambda, sometimes combined with S3, DynamoDB, Step Functions, or an external managed inference endpoint for heavier model execution.
+\item The key question is where the model runs. Very small models may execute inside Lambda, while larger models may require the API layer to dispatch to SageMaker, ECS, or an asynchronous backend.
+\item Security, request validation, quotas, and idempotency all sit close to the API boundary because public serverless endpoints are easy to invoke at scale.
+\end{itemize}
+
+\section*{How It Works}
+\begin{itemize}
+\item A client sends a request to the API, which authenticates and validates the payload before invoking the function or orchestration path.
+\item The backend performs preprocessing, optional feature or state lookup, model invocation, and response shaping, then returns a result or a job reference.
+\item CloudWatch metrics and logs capture request count, latency, errors, and downstream dependency behavior so the system can be tuned over time.
+\end{itemize}
+
+\section*{AI and ML Relevance}
+\begin{itemize}
+\item This project is useful for understanding which ML capabilities fit naturally into serverless boundaries and which do not.
+\item It also demonstrates how to expose prediction features with low operational overhead while preserving good access control and cost visibility.
+\end{itemize}
+
+\section*{Operational Notes}
+\begin{itemize}
+\item Cold starts, package size, and downstream timeout chains are the main operational risks. Heavy frameworks or large model files can make the design fail its latency objective.
+\item Guard against abuse with throttling and auth because a public inference API can turn into an expensive denial of wallet event.
+\item Prefer asynchronous patterns when inference time or payload size approaches the practical limits of synchronous serverless execution.
+\end{itemize}
+
+\section*{What To Remember}
+\begin{itemize}
+\item Serverless APIs are excellent when traffic is bursty and the unit of work is modest.
+\item Do not force a large real time model entirely into Lambda just because serverless looks simple on a diagram.
+\item The right design often mixes serverless control flow with a separate managed inference runtime.
+\end{itemize}
+
+\end{document}

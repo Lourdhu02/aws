@@ -1,0 +1,59 @@
+\documentclass[10pt,twocolumn]{article}
+\usepackage[scaled]{helvet}
+\renewcommand\familydefault{\sfdefault}
+\usepackage[T1]{fontenc}
+\usepackage[margin=0.7in]{geometry}
+\usepackage{titlesec}
+\usepackage{enumitem}
+\usepackage{parskip}
+\setlength{\columnsep}{0.24in}
+\setlist[itemize]{leftmargin=1.2em, topsep=0.2em, itemsep=0.18em}
+\titleformat{\section}{\large\bfseries}{\thesection}{1em}{}
+
+\begin{document}
+\title{\vspace{-1.6cm}AWS SageMaker}
+\author{AWS ML Study Notes}
+\date{}
+\maketitle
+\small
+
+\section*{Overview}
+SageMaker is AWS's managed machine learning platform for building, training, tuning, deploying, and governing ML models. It reduces the amount of infrastructure engineering needed to operationalize models.
+
+Rather than giving you only raw compute, SageMaker gives purpose built ML abstractions such as training jobs, endpoints, pipelines, model registry integration, experiment tooling, and managed notebooks.
+
+\section*{Core Concepts}
+\begin{itemize}
+\item SageMaker separates major concerns into specific services such as Studio, training, processing, batch transform, endpoints, feature related tooling, and pipeline orchestration.
+\item A typical SageMaker workflow uses S3 for data and artifacts, IAM for execution roles, CloudWatch for logs and metrics, and VPC integration when private networking is required.
+\item The value of SageMaker is not only managed infrastructure. It also standardizes packaging, deployment, lineage, and repeatability across teams.
+\end{itemize}
+
+\section*{How It Works}
+\begin{itemize}
+\item You prepare data, choose or build a container image, define the training configuration, and launch a managed job that provisions compute only for the duration needed.
+\item The trained model artifact can then be registered, deployed to a real time endpoint, served asynchronously, used for batch transform, or promoted through an MLOps pipeline.
+\item Operational events such as logs, metrics, model approval, and endpoint scaling are integrated into the wider AWS control plane.
+\end{itemize}
+
+\section*{AI and ML Relevance}
+\begin{itemize}
+\item SageMaker is useful when you want managed distributed training, hyperparameter tuning, controlled deployment patterns, or an internal ML platform without building every layer from scratch.
+\item It is especially strong for teams that need repeatable ML workflows with governance, auditability, and tighter integration with AWS-native security and networking patterns.
+\end{itemize}
+
+\section*{Operational Notes}
+\begin{itemize}
+\item SageMaker reduces toil but does not remove design work. You still need disciplined data versioning, evaluation gates, cost controls, and clear ownership boundaries.
+\item Use VPC attachment, KMS encryption, and separate execution roles when the platform handles regulated or proprietary data.
+\item Choose SageMaker because the managed abstractions help, not because it is fashionable. Simple workloads may be cheaper elsewhere, while complex governed ML often benefits from it strongly.
+\end{itemize}
+
+\section*{What To Remember}
+\begin{itemize}
+\item SageMaker is a platform layer built on top of core AWS services, not a separate universe.
+\item Training, deployment, and pipeline concerns should be understood independently even if SageMaker can connect them.
+\item For exams and interviews, focus on when SageMaker reduces operational burden versus when EC2 or containers give needed control.
+\end{itemize}
+
+\end{document}

@@ -1,0 +1,59 @@
+\documentclass[10pt,twocolumn]{article}
+\usepackage[scaled]{helvet}
+\renewcommand\familydefault{\sfdefault}
+\usepackage[T1]{fontenc}
+\usepackage[margin=0.7in]{geometry}
+\usepackage{titlesec}
+\usepackage{enumitem}
+\usepackage{parskip}
+\setlength{\columnsep}{0.24in}
+\setlist[itemize]{leftmargin=1.2em, topsep=0.2em, itemsep=0.18em}
+\titleformat{\section}{\large\bfseries}{\thesection}{1em}{}
+
+\begin{document}
+\title{\vspace{-1.6cm}Project: Real Time Computer Vision Pipeline}
+\author{AWS ML Study Notes}
+\date{}
+\maketitle
+\small
+
+\section*{Overview}
+A real time computer vision pipeline handles image or video related inference under tight latency constraints. It coordinates ingestion, preprocessing, model execution, response shaping, and operational monitoring.
+
+This kind of system is harder than a notebook demo because latency, payload size, concurrency, and failure handling all become first class engineering concerns.
+
+\section*{Core Concepts}
+\begin{itemize}
+\item Core components usually include an API layer, image transport or storage, preprocessing logic, a model runtime with GPU or optimized CPU support, and a result sink for downstream systems.
+\item The design must account for payload size, serialization overhead, and whether inference happens synchronously on request or asynchronously after upload.
+\item Observability needs to distinguish infrastructure failures from model failures, such as corrupt inputs, low confidence outputs, or drift in camera conditions.
+\end{itemize}
+
+\section*{How It Works}
+\begin{itemize}
+\item A client uploads an image or frame reference, the system validates and preprocesses it, and the model runtime performs detection, classification, or segmentation.
+\item The service returns structured predictions quickly or stores results for later retrieval if the payload and model latency make asynchronous processing more appropriate.
+\item Logs, request tracing, and sampled payload metadata support debugging when quality drops or latency spikes under production traffic.
+\end{itemize}
+
+\section*{AI and ML Relevance}
+\begin{itemize}
+\item This project demonstrates the gap between model training success and production reality. Input normalization, batching strategy, and hardware choice often matter as much as the model architecture.
+\item It is also a useful pattern for understanding how AWS services combine around GPU inference, object storage, APIs, and edge facing reliability concerns.
+\end{itemize}
+
+\section*{Operational Notes}
+\begin{itemize}
+\item Test with realistic image sizes and traffic bursts. Benchmarks based on tiny local samples routinely mislead teams.
+\item Protect the expensive inference layer with rate limits, queues, or admission control. One malformed client can otherwise create a cost incident.
+\item Version preprocessing code with the model. A mismatch between training time and serving time transforms silently damages quality.
+\end{itemize}
+
+\section*{What To Remember}
+\begin{itemize}
+\item Real time CV is a systems problem, not just a model problem.
+\item Latency budget is shared across transport, preprocessing, inference, and response handling.
+\item The serving path must preserve the same assumptions the model saw during training, or quality will collapse in production.
+\end{itemize}
+
+\end{document}
