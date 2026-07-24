@@ -1,9 +1,3 @@
-*.aux
-*.fdb_latexmk
-*.fls
+.env
 *.log
-*.out
-*.synctex.gz
-*.toc
-*.xdv
-__pycache__/
+node_modules/
