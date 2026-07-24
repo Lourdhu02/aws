@@ -32,3 +32,9 @@ Structured AWS learning notes focused on machine learning infrastructure, MLOps,
 3. Do hands-on AWS labs for every topic before marking it complete.
 4. Use [study-plan.md](study-plan.md) as the execution plan.
 5. Track completion in [progress.md](progress.md).
+
+## AWS Services
+- EC2
+- S3
+- Lambda
+- IAM
