@@ -2,10 +2,10 @@
 
 > Structured, hands-on AWS learning path for machine learning infrastructure, MLOps, serverless, data engineering, monitoring, GenAI, and production projects — with LaTeX notes, mind maps, labs, and certification prep.
 
-![GitHub repo size](https://img.shields.io/github/repo-size/yourname/aws.svg)
-![GitHub commits](https://img.shields.io/github/commits/yourname/aws/main.svg)
-![GitHub issues](https://img.shields.io/github/issues/yourname/aws.svg)
-![License](https://img.shields.io/github/license/yourname/aws.svg)
+![GitHub repo size](https://img.shields.io/github/repo-size/Lourdhu02/aws.svg)
+![GitHub commits](https://img.shields.io/github/commits/Lourdhu02/aws/main.svg)
+![GitHub issues](https://img.shields.io/github/issues/Lourdhu02/aws.svg)
+![License](https://img.shields.io/github/license/Lourdhu02/aws.svg)
 
 ---
 
@@ -35,7 +35,7 @@ A complete AWS ML study system — not just notes. You get concept coverage (LaT
 
 ```bash
 # 1. Clone
-git clone https://github.com/yourname/aws.git
+git clone https://github.com/Lourdhu02/aws.git
 cd aws
 
 # 2. Read one phase
