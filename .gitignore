@@ -1,3 +1,44 @@
+# Environment and runtime
 .env
 *.log
 node_modules/
+__pycache__/
+*.pyc
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Editor
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# LaTeX auxiliary files (PDFs kept deliberately — see below)
+*.aux
+*.log
+*.out
+*.toc
+*.fls
+*.fdb_latexmk
+*.synctex.gz
+
+# Personal evidence / logs (optional — uncomment if you keep logs in repo)
+# logs/
+
+# ---- PDFs ----
+# By default, exclude all PDFs. To commit PDFs, uncomment the exceptions below.
+*.pdf
+# !AWS_ML_Study_Guide.pdf
+# !00-foundations/*/*.pdf
+# !01-ml-infrastructure/*/*.pdf
+# !02-mlops-pipelines/*/*.pdf
+# !03-serverless/*/*.pdf
+# !04-data-engineering/*/*.pdf
+# !05-monitoring/*/*.pdf
+# !06-genai/*/*.pdf
+# !07-projects/*/*.pdf
+# !certifications/*/*.pdf
+# !docker/*.pdf
+# !terraform/*.pdf
