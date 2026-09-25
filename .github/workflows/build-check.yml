@@ -1,0 +1,54 @@
+# GitHub Actions — Build verification
+
+name: LaTeX build check
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '**/*.tex'
+      - '.github/workflows/build-check.yml'
+  pull_request:
+    branches: [main]
+    paths:
+      - '**/*.tex'
+      - '.github/workflows/build-check.yml'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install TeX Live (light)
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y texlive-latex-base texlive-latex-extra \
+            texlive-fonts-recommended texlive-science latexmk
+
+      - name: Compile each .tex file
+        run: |
+          set -e
+          failed=0
+          while IFS= read -r -d '' tex; do
+            dir=$(dirname "$tex")
+            base=$(basename "$tex" .tex)
+            echo "=== Compiling $tex ==="
+            cd "$dir"
+            if ! latexmk -pdf -quiet -interaction=nonstopmode "$base.tex" > /dev/null 2>&1; then
+              echo "FAIL: $tex"
+              failed=1
+            else
+              echo "OK: $tex"
+            fi
+            cd - > /dev/null
+          done < <(find . -name '*.tex' -print0)
+
+          if [ "$failed" -ne 0 ]; then
+            echo "::error::One or more .tex files failed to compile"
+            exit 1
+          fi
+          echo "All .tex files compiled successfully"
+
+      - name: Report
+        run: echo "Build check passed — all topic PDFs are reproducible from source"
